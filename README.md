@@ -1,2 +1,2 @@
 # golang
-Study
+Main repository for Golang
