@@ -6,9 +6,8 @@ import (
 
 var ErrInvalidString = errors.New("invalid string")
 
-func Unpack(_ string) (string, error) {
-	var result string
-	result = _
+func Unpack(in string) (string, error) {
+	var result string = in
 
 	return result, nil
 }
