@@ -22,4 +22,5 @@ func main() {
 	} else {
 		fmt.Printf("exact time: %s\n", exact.Format(layout))
 	}
+	fmt.Scanln()
 }

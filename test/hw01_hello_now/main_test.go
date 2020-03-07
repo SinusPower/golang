@@ -14,7 +14,6 @@ import (
 func TestHelloNow(t *testing.T) {
 	t.Run("test normal behavior", func(t *testing.T) {
 		layout := "2 Jan 2006 15:04:05"
-
 		monkey.Patch(time.Now, func() time.Time {
 			nowTime, err := time.Parse(layout, "9 May 1945 10:03:00")
 			if err != nil {
