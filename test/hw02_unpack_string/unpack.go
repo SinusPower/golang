@@ -37,8 +37,10 @@ func Unpack(in string) (string, error) {
 				prevRune = r
 				continue
 			}
-			count, _ := strconv.Atoi(string(r))                      // we know that r is a digit
-			b.WriteString(strings.Repeat(string(prevRune), count-1)) // the first rune we put on previous iteration
+			count, _ := strconv.Atoi(string(r)) // we know that r is a digit
+			if count != 0 {
+				b.WriteString(strings.Repeat(string(prevRune), count-1)) // the first rune we put on previous iteration
+			}
 		} else if r != '\\' {
 			b.WriteRune(r) // put single or the first rune in the group
 			digitWritten = false

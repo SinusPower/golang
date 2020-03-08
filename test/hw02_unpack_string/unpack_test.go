@@ -65,7 +65,7 @@ func TestUnpack(t *testing.T) {
 }
 
 func TestUnpackWithEscape(t *testing.T) {
-	t.Skip() // Remove if task with asterisk completed
+	// t.Skip() // Remove if task with asterisk completed
 
 	for _, tst := range [...]test{
 		{
@@ -116,6 +116,10 @@ func TestUnpackWithEscape(t *testing.T) {
 		{ // new case
 			input:    `\\\\\\\5\\\`,
 			expected: `\\\5\`,
+		},
+		{ // new case
+			input:    `a4b\55c2d5e\10`,
+			expected: `aaaab55555ccddddde1`,
 		},
 	} {
 		result, err := Unpack(tst.input)
