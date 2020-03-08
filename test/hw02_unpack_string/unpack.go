@@ -41,14 +41,14 @@ func Unpack(in string) (string, error) {
 			b.WriteString(strings.Repeat(string(prevRune), count-1)) // the first rune we put on previous iteration
 		} else if r != '\\' {
 			b.WriteRune(r) // put single or the first rune in the group
-			digitWritten = true
+			digitWritten = false
 		} else {
 			if !skipped {
 				skipped = true
-			} else {
+			} else { // r == '\\'
 				b.WriteRune(r)
 				skipped = false
-				digitWritten = true
+				digitWritten = false
 			}
 		}
 		prevRune = r
