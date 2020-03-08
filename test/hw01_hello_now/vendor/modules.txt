@@ -1,0 +1,17 @@
+# bou.ke/monkey v1.0.2
+## explicit
+bou.ke/monkey
+# github.com/beevik/ntp v0.2.0
+## explicit
+github.com/beevik/ntp
+# github.com/stretchr/testify v1.4.0
+## explicit
+# golang.org/x/net v0.0.0-20200202094626-16171245cfb2
+## explicit
+golang.org/x/net/bpf
+golang.org/x/net/internal/iana
+golang.org/x/net/internal/socket
+golang.org/x/net/ipv4
+# golang.org/x/sys v0.0.0-20190215142949-d0b11bdaac8a
+golang.org/x/sys/unix
+golang.org/x/sys/windows

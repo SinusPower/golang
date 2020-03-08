@@ -22,6 +22,27 @@ func TestUnpack(t *testing.T) {
 			input:    "abcd",
 			expected: "abcd",
 		},
+		{ // new case
+			input:    "a1",
+			expected: "a",
+		},
+		{ // new case
+			input:    "1a",
+			expected: "a",
+		},
+		{ // new case
+			input:    "5",
+			expected: "",
+		},
+		{ // new case
+			input:    "m",
+			expected: "m",
+		},
+		{ // new case
+			input:    "aa",
+			expected: "",
+			err:      ErrInvalidString,
+		},
 		{
 			input:    "45",
 			expected: "",
@@ -62,6 +83,39 @@ func TestUnpackWithEscape(t *testing.T) {
 		{
 			input:    `qwe\\\3`,
 			expected: `qwe\3`,
+		},
+		{ // new case
+			input:    `\\`,
+			expected: `\`,
+		},
+		{ // new case
+			input:    `5\\`,
+			expected: `\`,
+		},
+		{ // new case
+			input:    `55\\`,
+			expected: ``,
+			err:      ErrInvalidString,
+		},
+		{ // new case
+			input:    `\5\5\`,
+			expected: `55`,
+		},
+		{ // new case
+			input:    `\55`,
+			expected: `55555`,
+		},
+		{ // new case
+			input:    `\\\\\\\\\\`,
+			expected: `\\\\\`,
+		},
+		{ // new case
+			input:    `\\\\5\\\\\\`,
+			expected: `\\\\\\\\\`,
+		},
+		{ // new case
+			input:    `\\\\\\\5\\\`,
+			expected: `\\\5\`,
 		},
 	} {
 		result, err := Unpack(tst.input)
