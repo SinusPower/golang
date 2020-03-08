@@ -10,7 +10,7 @@ import (
 const errorExitCode int = 1
 
 func main() {
-	tst := `a4b\55c2d5e0`
+	tst := `0m`
 	if res, err := hw02.Unpack(tst); err != nil {
 		fmt.Println(err)
 		os.Exit(errorExitCode)

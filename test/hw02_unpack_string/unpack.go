@@ -18,43 +18,36 @@ func Unpack(in string) (string, error) {
 
 	var b strings.Builder
 	runes := []rune(in)
-	var prevRune rune
-	skipped := false
-	digitWritten := false
+	n := len(runes)
+	escape := false
 
-	for _, r := range runes {
-		if prevRune == r && r != '\\' && !digitWritten {
+	for i := 0; i < n-1; i++ {
+		if unicode.IsDigit(runes[i]) && unicode.IsDigit(runes[i+1]) && !escape { //numbers isn't allowed
 			return "", ErrInvalidString
 		}
-		if unicode.IsDigit(r) {
-			if unicode.IsDigit(prevRune) && !digitWritten {
-				return "", ErrInvalidString
-			}
-			if skipped {
-				b.WriteRune(r)
-				skipped = false
-				digitWritten = true
-				prevRune = r
-				continue
-			}
-			count, _ := strconv.Atoi(string(r)) // we know that r is a digit
-			if count != 0 {
-				b.WriteString(strings.Repeat(string(prevRune), count-1)) // the first rune we put on previous iteration
-			}
-		} else if r != '\\' {
-			b.WriteRune(r) // put single or the first rune in the group
-			digitWritten = false
-		} else {
-			if !skipped {
-				skipped = true
-			} else { // r == '\\'
-				b.WriteRune(r)
-				skipped = false
-				digitWritten = false
-			}
+		if runes[i] == runes[i+1] && runes[i] != '\\' && !escape { // duplicated chars isn't allowed, except `\`
+			return "", ErrInvalidString
 		}
-		prevRune = r
+		if escape && unicode.IsDigit(runes[i]) && !unicode.IsDigit(runes[i+1]) { // write single digit
+			b.WriteRune(runes[i])
+		}
+		if escape = runes[i] == '\\' && !escape; escape {
+			continue
+		}
+		if unicode.IsDigit(runes[i+1]) {
+			count, _ := strconv.Atoi(string(runes[i+1]))
+			if count != 0 {
+				b.WriteString(strings.Repeat(string(runes[i]), count))
+			}
+		} else if !unicode.IsDigit(runes[i]) { // write single char
+			b.WriteRune(runes[i])
+		}
 	}
-
+	if escape { // write last
+		b.WriteRune(runes[n-1])
+	}
+	if !unicode.IsDigit(runes[n-1]) && runes[n-1] != '\\' { // write last
+		b.WriteRune(runes[n-1])
+	}
 	return b.String(), nil
 }
