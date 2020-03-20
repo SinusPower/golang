@@ -2,7 +2,6 @@ package hw02_unpack_string //nolint:golint,stylecheck
 
 import (
 	"errors"
-	"strconv"
 	"strings"
 	"unicode"
 )
@@ -13,41 +12,41 @@ var ErrInvalidString = errors.New("invalid string")
 // This function allows skipping characters by '\'.
 func Unpack(in string) (string, error) {
 	if in == "" {
-		return "", nil
+		return in, nil
+	}
+
+	runes := []rune(in)
+
+	if len(runes) == 1 && !unicode.IsDigit(runes[0]) && runes[0] != '\\' {
+		return in, nil
 	}
 
 	var b strings.Builder
-	runes := []rune(in)
-	n := len(runes)
-	escape := false
-
-	for i := 0; i < n-1; i++ {
-		if unicode.IsDigit(runes[i]) && unicode.IsDigit(runes[i+1]) && !escape { //numbers isn't allowed
+	var esc bool
+	prev := runes[0]
+	for _, cur := range runes[1:] {
+		if !esc && ((unicode.IsDigit(prev) && unicode.IsDigit(cur)) ||
+			(prev == cur && prev != '\\')) {
+			// numbers and duplicated chars aren't allowed
 			return "", ErrInvalidString
 		}
-		if runes[i] == runes[i+1] && runes[i] != '\\' && !escape { // duplicated chars isn't allowed, except `\`
-			return "", ErrInvalidString
+		if esc && unicode.IsDigit(prev) && !unicode.IsDigit(cur) { // write single digit
+			b.WriteRune(prev)
 		}
-		if escape && unicode.IsDigit(runes[i]) && !unicode.IsDigit(runes[i+1]) { // write single digit
-			b.WriteRune(runes[i])
-		}
-		if escape = runes[i] == '\\' && !escape; escape {
+		if esc = prev == '\\' && !esc; esc {
+			prev = cur
 			continue
 		}
-		if unicode.IsDigit(runes[i+1]) {
-			count, _ := strconv.Atoi(string(runes[i+1]))
-			if count != 0 {
-				b.WriteString(strings.Repeat(string(runes[i]), count))
-			}
-		} else if !unicode.IsDigit(runes[i]) { // write single char
-			b.WriteRune(runes[i])
+		if unicode.IsDigit(cur) {
+			cnt := int(cur - '0')
+			b.WriteString(strings.Repeat(string(prev), cnt))
+		} else if !unicode.IsDigit(prev) { // write single char
+			b.WriteRune(prev)
 		}
+		prev = cur
 	}
-	if escape { // write last
-		b.WriteRune(runes[n-1])
-	}
-	if !unicode.IsDigit(runes[n-1]) && runes[n-1] != '\\' { // write last
-		b.WriteRune(runes[n-1])
+	if esc || (!unicode.IsDigit(prev) && prev != '\\') { // write last
+		b.WriteRune(prev)
 	}
 	return b.String(), nil
 }
