@@ -114,6 +114,9 @@ func (l *list) Remove(i *listItem) {
 	if i == l.front {
 		if l.front.Prev != nil {
 			l.front = l.front.Prev
+			if l.front == l.back {
+				l.back = nil
+			}
 			l.front.Next = nil
 		} else {
 			l.front = nil
@@ -124,6 +127,9 @@ func (l *list) Remove(i *listItem) {
 	if i == l.back {
 		if l.back.Next != nil {
 			l.back = l.back.Next
+			if l.back == l.front {
+				l.front = nil
+			}
 			l.back.Prev = nil
 		} else {
 			l.back = nil
