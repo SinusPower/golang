@@ -10,14 +10,11 @@ import (
 const errorExitCode int = 1
 
 func main() {
-	tst := `a5\b`
+	tst := `qw\\\ne`
 	if res, err := hw02.Unpack(tst); err != nil {
 		fmt.Println(err)
 		os.Exit(errorExitCode)
 	} else {
 		fmt.Println(res)
-		// runes := []rune(tst)
-		// runes = runes[1:]
-		// fmt.Println(string(runes))
 	}
 }
