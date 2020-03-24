@@ -89,7 +89,7 @@ func TestList(t *testing.T) {
 		require.Equal(t, 0.4, l.Back().Value)
 
 		n := l.Len()
-		for i := 0; i < n; i++ { // remove all by "Front()"
+		for i := 0; i < n; i++ { // remove all by "Back()"
 			l.Remove(l.Back())
 		}
 		require.Equal(t, l.Len(), 0)
