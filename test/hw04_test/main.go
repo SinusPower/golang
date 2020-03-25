@@ -6,7 +6,7 @@ import (
 	hw04 "github.com/sinuspower/golang/test/hw04_lru_cache"
 )
 
-func main() {
+func listTest() {
 	testList := hw04.NewList()
 	fmt.Println("After initialization =>")
 	fmt.Println("list: ", testList)
@@ -121,4 +121,53 @@ func main() {
 		l = l.Next
 	}
 	fmt.Printf("____________________________\n\n")
+}
+
+func cacheTest() {
+	cache := hw04.NewCache(5)
+	fmt.Println("After initialization =>")
+	fmt.Printf("cap: %d\n", cache.Cap())
+	fmt.Printf("cache: %v\n", cache)
+	fmt.Printf("____________________________\n\n")
+
+	i := 0
+	cache.Set("itemOne", i)
+	fmt.Printf("After Set(%d) =>\n", i)
+	fmt.Printf("cap: %d\n", cache.Cap())
+	fmt.Printf("cache: %v\n", cache)
+	fmt.Printf("____________________________\n\n")
+
+	i = 1
+	cache.Set("itemTwo", i)
+	fmt.Printf("After Set(%d) =>\n", i)
+	fmt.Printf("cap: %d\n", cache.Cap())
+	fmt.Printf("cache: %v\n", cache)
+	fmt.Printf("____________________________\n\n")
+
+	fmt.Println(`Get by "itemOne" =>`)
+	v, r := cache.Get("itemOne")
+	fmt.Printf("val: %v\nfound: %v\n", v, r)
+	fmt.Printf("____________________________\n\n")
+
+	fmt.Println(`Get by "itemTwo" =>`)
+	v, r = cache.Get("itemTwo")
+	fmt.Printf("val: %v\nfound: %v\n", v, r)
+	fmt.Printf("____________________________\n\n")
+
+	fmt.Println(`Get by "itemThree" =>`)
+	v, r = cache.Get("itemThree")
+	fmt.Printf("val: %v\nfound: %v\n", v, r)
+	fmt.Printf("____________________________\n\n")
+
+	i = 800
+	fmt.Printf(`Set value = %d by "itemOne" =>`, i)
+	cache.Set("itemOne", i)
+	v, r = cache.Get("itemOne")
+	fmt.Printf("val: %v\nfound: %v\n", v, r)
+	fmt.Printf("____________________________\n\n")
+}
+
+func main() {
+	// listTest()
+	cacheTest()
 }
