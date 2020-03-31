@@ -162,9 +162,11 @@ func cacheTest() {
 	i = 800
 	fmt.Printf(`Set value = %d by "itemOne" =>`, i)
 	cache.Set("itemOne", i)
-	v, r = cache.Get("itemOne")
-	fmt.Printf("val: %v\nfound: %v\n", v, r)
-	fmt.Printf("____________________________\n\n")
+	/*
+		v, r = cache.Get("itemOne")
+		fmt.Printf("val: %v\nfound: %v\n", v, r)
+		fmt.Printf("____________________________\n\n")
+	*/
 }
 
 func main() {
