@@ -26,6 +26,7 @@ func NewList() List {
 	return &list{}
 }
 
+// можно убрать звёздочку, когда не собираемся менять поля структуры
 func (l *list) Len() int {
 	if l == nil {
 		return 0
@@ -157,6 +158,7 @@ func (l *list) MoveToFront(i *listItem) {
 	if i == l.back {
 		l.back = l.back.Next
 		l.back.Prev = nil
+		l.front.Next = i
 		i.Prev = l.front
 		i.Next = nil
 		l.front = i
@@ -164,6 +166,7 @@ func (l *list) MoveToFront(i *listItem) {
 	}
 	i.Prev.Next = i.Next
 	i.Next.Prev = i.Prev
+	l.front.Next = i
 	i.Prev = l.front
 	i.Next = nil
 	l.front = i

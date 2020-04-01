@@ -121,6 +121,22 @@ func listTest() {
 		l = l.Next
 	}
 	fmt.Printf("____________________________\n\n")
+
+	for j := 0; j < 5; j++ {
+		b := testList.Back().Value
+		testList.MoveToFront(testList.Back())
+		fmt.Printf("After MoveToFront(%d)) =>\n", b)
+		l = testList.Back()
+		for l != nil {
+			fmt.Println("item: ", l)
+			fmt.Println("data: ", l.Value)
+			fmt.Println("prev: ", l.Prev)
+			fmt.Println("next: ", l.Next)
+			fmt.Println("___")
+			l = l.Next
+		}
+	}
+	fmt.Printf("____________________________\n\n")
 }
 
 func cacheTest() {
@@ -160,13 +176,11 @@ func cacheTest() {
 	fmt.Printf("____________________________\n\n")
 
 	i = 800
-	fmt.Printf(`Set value = %d by "itemOne" =>`, i)
+	fmt.Printf("Set value = %d by \"itemOne\" =>\n", i)
 	cache.Set("itemOne", i)
-	/*
-		v, r = cache.Get("itemOne")
-		fmt.Printf("val: %v\nfound: %v\n", v, r)
-		fmt.Printf("____________________________\n\n")
-	*/
+	v, r = cache.Get("itemOne")
+	fmt.Printf("val: %v\nfound: %v\n", v, r)
+	fmt.Printf("____________________________\n\n")
 }
 
 func main() {

@@ -9,6 +9,10 @@ type Cache interface {
 	Cap() int // this method must be removed
 }
 
+type cacheItem struct {
+	// Place your code here
+}
+
 type lruCache struct {
 	capacity int
 	queue    List
@@ -32,6 +36,9 @@ func (lc *lruCache) Set(key string, value interface{}) bool {
 	}
 	// insert
 	lc.items[k] = lc.queue.PushFront(value)
+	if len(lc.items) > lc.capacity { // remove old record
+		// !!! remove old key
+	}
 	return false
 }
 
