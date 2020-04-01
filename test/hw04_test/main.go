@@ -190,32 +190,6 @@ func cacheTest() {
 		fmt.Printf("<--\n")
 		fmt.Printf("____________________________\n\n")
 	}
-	/*
-		fmt.Println(`Get by "itemOne" =>`)
-		v, r := cache.Get("itemOne")
-		fmt.Printf("val: %v\nfound: %v\n", v, r)
-		fmt.Printf("____________________________\n\n")
-
-		fmt.Println(`Get by "itemTwo" =>`)
-		v, r = cache.Get("itemTwo")
-		fmt.Printf("val: %v\nfound: %v\n", v, r)
-		fmt.Printf("____________________________\n\n")
-
-		fmt.Println(`Get by "itemThree" =>`)
-		v, r = cache.Get("itemThree")
-		fmt.Printf("val: %v\nfound: %v\n", v, r)
-		fmt.Printf("____________________________\n\n")
-
-
-		i := 800
-		fmt.Printf("Set value = %d by \"itemOne\" =>\n", i)
-		f = cache.Set("itemOne", i)
-		fmt.Printf("existed: %v\n", f)
-		fmt.Printf("cap: %d\n", cache.Cap())
-		fmt.Printf("cache: %v\n", cache)
-		v, r = cache.Get("itemOne")
-		fmt.Printf("val: %v\nfound: %v\n", v, r)
-		fmt.Printf("____________________________\n\n")*/
 }
 
 func main() {
