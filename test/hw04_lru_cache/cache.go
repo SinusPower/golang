@@ -5,12 +5,13 @@ type Key string
 type Cache interface {
 	Set(key string, value interface{}) bool
 	Get(key string) (interface{}, bool)
+	GetQueue() List // this function must be removed!
 	Clear()
-	Cap() int // this method must be removed
 }
 
 type cacheItem struct {
-	// Place your code here
+	key   Key
+	value interface{}
 }
 
 type lruCache struct {
@@ -30,14 +31,17 @@ func NewCache(capacity int) Cache {
 func (lc *lruCache) Set(key string, value interface{}) bool {
 	k := Key(key)
 	if itm, ok := lc.items[k]; ok { // refresh
-		itm.Value = value
+		refreshed := cacheItem{k, value}
+		itm.Value = refreshed
 		lc.queue.MoveToFront(lc.items[k])
 		return true
 	}
 	// insert
-	lc.items[k] = lc.queue.PushFront(value)
+	lc.items[k] = lc.queue.PushFront(cacheItem{k, value})
 	if len(lc.items) > lc.capacity { // remove old record
-		// !!! remove old key
+		old := lc.queue.Back()
+		delete(lc.items, old.Value.(cacheItem).key)
+		lc.queue.Remove(old)
 	}
 	return false
 }
@@ -55,6 +59,6 @@ func (lc *lruCache) Clear() {
 	return
 }
 
-func (lc *lruCache) Cap() int {
-	return lc.capacity
+func (lc *lruCache) GetQueue() List {
+	return lc.queue
 }

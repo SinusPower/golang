@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 
 	hw04 "github.com/sinuspower/golang/test/hw04_lru_cache"
 )
@@ -140,47 +141,81 @@ func listTest() {
 }
 
 func cacheTest() {
-	cache := hw04.NewCache(5)
+	cache := hw04.NewCache(3)
 	fmt.Println("After initialization =>")
-	fmt.Printf("cap: %d\n", cache.Cap())
 	fmt.Printf("cache: %v\n", cache)
 	fmt.Printf("____________________________\n\n")
 
-	i := 0
-	cache.Set("itemOne", i)
-	fmt.Printf("After Set(%d) =>\n", i)
-	fmt.Printf("cap: %d\n", cache.Cap())
-	fmt.Printf("cache: %v\n", cache)
-	fmt.Printf("____________________________\n\n")
+	var f bool
+	for i := 0; i < 10; i++ {
+		f = cache.Set("item"+strconv.Itoa(i), i)
+		fmt.Printf("After Set(%d) =>\n", i)
+		fmt.Printf("existed: %v\n", f)
+		fmt.Printf("cache: %v\n", cache)
+		q := cache.GetQueue()
+		fmt.Printf("queue: <-- ")
+		for itm := q.Front(); itm != nil; itm = itm.Prev {
+			fmt.Printf("%v ", itm.Value)
+		}
+		fmt.Printf("<--\n")
+		fmt.Printf("____________________________\n\n")
+	}
 
-	i = 1
-	cache.Set("itemTwo", i)
-	fmt.Printf("After Set(%d) =>\n", i)
-	fmt.Printf("cap: %d\n", cache.Cap())
-	fmt.Printf("cache: %v\n", cache)
-	fmt.Printf("____________________________\n\n")
+	var v interface{}
+	for i := 0; i < 10; i++ {
+		v, f = cache.Get("item" + strconv.Itoa(i))
+		fmt.Printf("After Get(%d) =>\n", i)
+		fmt.Printf("item: %v\n", v)
+		fmt.Printf("found: %v\n", f)
+		fmt.Printf("cache: %v\n", cache)
+		q := cache.GetQueue()
+		fmt.Printf("queue: <-- ")
+		for itm := q.Front(); itm != nil; itm = itm.Prev {
+			fmt.Printf("%v ", itm.Value)
+		}
+		fmt.Printf("<--\n")
+		fmt.Printf("____________________________\n\n")
+	}
 
-	fmt.Println(`Get by "itemOne" =>`)
-	v, r := cache.Get("itemOne")
-	fmt.Printf("val: %v\nfound: %v\n", v, r)
-	fmt.Printf("____________________________\n\n")
+	for i := 7; i < 10; i++ {
+		f = cache.Set("item"+strconv.Itoa(i), i+10)
+		fmt.Printf("After Set(%d) =>\n", i)
+		fmt.Printf("existed: %v\n", f)
+		fmt.Printf("cache: %v\n", cache)
+		q := cache.GetQueue()
+		fmt.Printf("queue: <-- ")
+		for itm := q.Front(); itm != nil; itm = itm.Prev {
+			fmt.Printf("%v ", itm.Value)
+		}
+		fmt.Printf("<--\n")
+		fmt.Printf("____________________________\n\n")
+	}
+	/*
+		fmt.Println(`Get by "itemOne" =>`)
+		v, r := cache.Get("itemOne")
+		fmt.Printf("val: %v\nfound: %v\n", v, r)
+		fmt.Printf("____________________________\n\n")
 
-	fmt.Println(`Get by "itemTwo" =>`)
-	v, r = cache.Get("itemTwo")
-	fmt.Printf("val: %v\nfound: %v\n", v, r)
-	fmt.Printf("____________________________\n\n")
+		fmt.Println(`Get by "itemTwo" =>`)
+		v, r = cache.Get("itemTwo")
+		fmt.Printf("val: %v\nfound: %v\n", v, r)
+		fmt.Printf("____________________________\n\n")
 
-	fmt.Println(`Get by "itemThree" =>`)
-	v, r = cache.Get("itemThree")
-	fmt.Printf("val: %v\nfound: %v\n", v, r)
-	fmt.Printf("____________________________\n\n")
+		fmt.Println(`Get by "itemThree" =>`)
+		v, r = cache.Get("itemThree")
+		fmt.Printf("val: %v\nfound: %v\n", v, r)
+		fmt.Printf("____________________________\n\n")
 
-	i = 800
-	fmt.Printf("Set value = %d by \"itemOne\" =>\n", i)
-	cache.Set("itemOne", i)
-	v, r = cache.Get("itemOne")
-	fmt.Printf("val: %v\nfound: %v\n", v, r)
-	fmt.Printf("____________________________\n\n")
+
+		i := 800
+		fmt.Printf("Set value = %d by \"itemOne\" =>\n", i)
+		f = cache.Set("itemOne", i)
+		fmt.Printf("existed: %v\n", f)
+		fmt.Printf("cap: %d\n", cache.Cap())
+		fmt.Printf("cache: %v\n", cache)
+		v, r = cache.Get("itemOne")
+		fmt.Printf("val: %v\nfound: %v\n", v, r)
+		fmt.Printf("____________________________\n\n")*/
 }
 
 func main() {
