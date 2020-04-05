@@ -26,7 +26,6 @@ func NewList() List {
 	return &list{}
 }
 
-// можно убрать звёздочку, когда не собираемся менять поля структуры
 func (l *list) Len() int {
 	if l == nil {
 		return 0
