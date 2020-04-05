@@ -148,7 +148,7 @@ func cacheTest() {
 
 	var f bool
 	for i := 0; i < 10; i++ {
-		f = cache.Set("item"+strconv.Itoa(i), i)
+		f = cache.Set(hw04.Key("item"+strconv.Itoa(i)), i)
 		fmt.Printf("After Set(%d) =>\n", i)
 		fmt.Printf("existed: %v\n", f)
 		fmt.Printf("cache: %v\n", cache)
@@ -163,7 +163,7 @@ func cacheTest() {
 
 	var v interface{}
 	for i := 0; i < 10; i++ {
-		v, f = cache.Get("item" + strconv.Itoa(i))
+		v, f = cache.Get(hw04.Key("item" + strconv.Itoa(i)))
 		fmt.Printf("After Get(%d) =>\n", i)
 		fmt.Printf("item: %v\n", v)
 		fmt.Printf("found: %v\n", f)
@@ -178,7 +178,7 @@ func cacheTest() {
 	}
 
 	for i := 7; i < 10; i++ {
-		f = cache.Set("item"+strconv.Itoa(i), i+10)
+		f = cache.Set(hw04.Key("item"+strconv.Itoa(i)), i+10)
 		fmt.Printf("After Set(%d) =>\n", i)
 		fmt.Printf("existed: %v\n", f)
 		fmt.Printf("cache: %v\n", cache)
