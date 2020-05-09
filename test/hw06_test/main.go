@@ -21,17 +21,28 @@ const (
 )
 
 func ExecutePipeline(in In, done In, stages ...Stage) Out {
-	out := make(Out)
-	select {
-	case <-done:
-		return out
-	default:
-		out = in
-		for i, s := range stages {
-			fmt.Println("stage ", i)
-			out = s(out)
+	multiplex := func(in In, out Bi) {
+		defer close(out)
+		for {
+			select {
+			case <-done:
+				return
+			case v, ok := <-in:
+				if !ok {
+					return
+				}
+				out <- v
+			}
 		}
 	}
+
+	out := in
+	for _, stage := range stages {
+		stageIn := make(Bi)
+		go multiplex(out, stageIn)
+		out = stage(stageIn)
+	}
+
 	return out
 }
 
@@ -58,9 +69,17 @@ func main() {
 		g("Stringifier", func(v I) I { return strconv.Itoa(v.(int)) }),
 	}
 
+	/*
+		done := make(Bi)
+		abortDur := sleepPerStage
+		go func() {
+			<-time.After(abortDur)
+			close(done)
+		}()
+	*/
+
 	in := make(Bi)
 	data := []int{1, 2, 3, 4, 5}
-
 	go func() {
 		for _, v := range data {
 			in <- v
@@ -70,8 +89,7 @@ func main() {
 
 	result := make([]string, 0, 10)
 	for s := range ExecutePipeline(in, nil, stages...) {
-		//result = append(result, s.(string))
-		fmt.Println(s)
+		result = append(result, s.(string))
 	}
 
 	for _, r := range result {
