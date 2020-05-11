@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -24,5 +25,18 @@ with new line`,
 		actual, err := ReadDir("testdata/env")
 		require.Nil(t, err, "err is not nil")
 		require.Equal(t, expected, actual, "result map not match required map")
+	})
+
+	t.Run("= in file name", func(t *testing.T) {
+		f, err := os.Create("testdata/env/BAD=bad")
+		require.Nil(t, err, "can not create test file")
+		f.Close()
+
+		env, err := ReadDir("testdata/env")
+		require.Nil(t, env)
+		require.Equal(t, ErrWrongFileName, err)
+
+		err = os.Remove("testdata/env/BAD=bad")
+		require.Nil(t, err, "error removing output file")
 	})
 }
