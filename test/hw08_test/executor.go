@@ -23,7 +23,7 @@ func RunCmd(cmd []string, env Environment) (returnCode int) {
 
 	// prepare command
 	command := exec.Command(cmd[0], cmd[0:]...)
-	command.Env = append(os.Environ())
+	command.Env = os.Environ() // ?
 	command.Stdin = os.Stdin
 	command.Stdout = os.Stdout
 	command.Stderr = os.Stderr
