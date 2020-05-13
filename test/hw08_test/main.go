@@ -1,13 +1,23 @@
 package main
 
-import "fmt"
+import (
+	"log"
+	"os"
+)
 
 func main() {
-	env, err := ReadDir("testdata/env")
+	args := os.Args
+	if len(args) == 1 {
+		return
+	}
+	args = args[1:]
+
+	envDir := args[0]
+	env, err := ReadDir(envDir)
 	if err != nil {
-		fmt.Println(err)
+		log.Fatal(err)
 	}
-	for k, v := range env {
-		fmt.Printf("%s: %s\n", k, v)
-	}
+
+	cmd := args[1:]
+	os.Exit(RunCmd(cmd, env))
 }

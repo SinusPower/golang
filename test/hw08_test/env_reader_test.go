@@ -14,7 +14,7 @@ func TestReadDir(t *testing.T) {
 		require.Equal(t, err, ErrCanNotOpenDir)
 	})
 
-	t.Run("read files", func(t *testing.T) {
+	t.Run("positive case", func(t *testing.T) {
 		expected := Environment{
 			"BAR": `bar`,
 			"FOO": `   foo
