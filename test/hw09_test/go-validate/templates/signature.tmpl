@@ -1,0 +1,5 @@
+{{/* validation function's signature */}}
+{{define "signature"}}
+    // Validate validates fields of {{.Signature.TypeName}} struct.
+    func ({{.Signature.VarName}} {{.Signature.TypeName}}) Validate() ([]ValidationError, error) {
+{{end}}
