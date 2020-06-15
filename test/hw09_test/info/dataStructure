@@ -1,0 +1,80 @@
+data { // данные для base-темплейта
+    PackageName
+    Functions {
+        function { // данные для генерации функции (для func-темплейта)
+            VarName
+            TypeName
+            Fields {
+                field { // информация о валидируемом поле
+                    Name
+                    Type
+                    Rules {
+                        rule { // правило валидации
+                            Type
+                            String
+                        }
+                        ...
+                        rule { // правило валидации
+                            Type
+                            String
+                        }
+                    }
+                }
+                ...
+                field { // информация о валидируемом поле
+                    Name
+                    Type
+                    Rules {
+                        rule { // правило валидации
+                            Type
+                            String
+                        }
+                        ...
+                        rule { // правило валидации
+                            Type
+                            String
+                        }
+                    }
+                }
+            }
+        }
+        ...
+        function { // данные для генерации функции (для func-темплейта)
+            VarName
+            TypeName
+            Fields {
+                field { // информация о валидируемом поле
+                    Name
+                    Type
+                    Rules {
+                        rule { // правило валидации
+                            Type
+                            String
+                        }
+                        ...
+                        rule { // правило валидации
+                            Type
+                            String
+                        }
+                    }
+                }
+                ...
+                field { // информация о валидируемом поле
+                    Name
+                    Type
+                    Rules {
+                        rule { // правило валидации
+                            Type
+                            String
+                        }
+                        ...
+                        rule { // правило валидации
+                            Type
+                            String
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

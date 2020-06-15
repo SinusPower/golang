@@ -11,7 +11,7 @@ func main() {
 		return
 	}
 
-	if err := Generate(args[1]); err != nil {
+	if err := generate(args[1]); err != nil {
 		log.Fatal(err)
 	}
 }
