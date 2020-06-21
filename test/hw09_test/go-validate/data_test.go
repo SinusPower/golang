@@ -162,7 +162,8 @@ func TestGetBaseTypes(t *testing.T) {
 		f, err := parser.ParseFile(fileSet, sourcePath, sourceBytes, 0)
 		require.NoErrorf(t, err, "can not parse file: %w", err)
 
-		require.Equal(t, map[string]string{"UserRole": "string"}, getBaseTypes(f, sourceBytes))
+		expected := map[string]string{"UserRole": "string", "StatusDesc": "string"}
+		require.Equal(t, expected, getBaseTypes(f, sourceBytes))
 	})
 }
 

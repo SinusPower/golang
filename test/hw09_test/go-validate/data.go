@@ -61,6 +61,10 @@ func getData(f *ast.File, src []byte) data {
 							if arrayType, ok := fld.Type.(*ast.ArrayType); ok {
 								fieldType = "array"
 								fieldBaseType = string(src[arrayType.Pos()+1 : arrayType.End()-1])
+								t, ok := baseTypes[fieldBaseType]
+								if ok {
+									fieldBaseType = t
+								}
 							}
 							t, ok := baseTypes[fieldType]
 							if ok {

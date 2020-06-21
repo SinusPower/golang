@@ -3,6 +3,7 @@ package models
 //go:generate go-validate $GOFILE
 
 type UserRole string
+type StatusDesc string
 
 // NOTE: Several struct specs in one type declaration are allowed.
 
@@ -28,7 +29,7 @@ type Token struct {
 }
 
 type Response struct {
-	Code int      `validate:"in:200,404,500"`
-	Desc []string `validate:"in:ok,not found,server error"`
-	Body string   `json:"omitempty"`
+	Code int          `validate:"in:200,404,500"`
+	Desc []StatusDesc `validate:"in:ok,not found,server error"`
+	Body string       `json:"omitempty"`
 }
