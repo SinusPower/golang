@@ -49,20 +49,8 @@ func (u User) Validate() ([]ValidationError, error) {
 		})
 	}
 
-	inStrings := strings.Split("admin,stuff", ",")
-	var found bool
-	for _, s := range inStrings {
-		found = u.Role == strings.TrimSpace(s)
-		if found {
-			break
-		}
-	}
-	if !found {
-		vErrs = append(vErrs, ValidationError{
-			Field: "Role",
-			Error: errors.New("Role not in [admin,stuff]"),
-		})
-	}
+	// validation of UserRole start
+	// validation of UserRole end
 
 	for _, item := range u.Phones {
 		if len(item) != 11 {
@@ -112,24 +100,6 @@ func (r Response) Validate() ([]ValidationError, error) {
 			Field: "Code",
 			Error: errors.New("Code not in [200,404,500]"),
 		})
-	}
-
-	rDescSet := strings.Split("ok,not found,server error", ",")
-	for _, item := range r.Desc {
-		var found bool
-		for _, s := range rDescSet {
-			found = item == strings.TrimSpace(s)
-			if found {
-				break
-			}
-		}
-		if !found {
-			vErrs = append(vErrs, ValidationError{
-				Field: "Desc",
-				Error: errors.New("each item in Desc must be from [ok,not found,server error] set"),
-			})
-			break
-		}
 	}
 
 	return vErrs, nil

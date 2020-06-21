@@ -167,7 +167,7 @@
                     }
                 {{end}}
             {{/* rules for user defined types based on string and int*/}}
-            {{else if and (eq $fieldBaseType "") (eq .Type "in")}}
+            {{else if and (eq $fieldBaseType "string") (eq .Type "in")}}
                 // validation of {{$fieldType}} start
                 // validation of {{$fieldType}} end
             {{end}}
