@@ -4,8 +4,8 @@
     package {{.PackageName}}
 
     import (
-        "errors"
-        "regexp"
+        {{range .Imports}}"{{.}}"
+        {{end}}
     )
 
     type ValidationError struct {

@@ -10,7 +10,7 @@ import (
 
 func TestParseInputFile(t *testing.T) {
 	t.Run("file not exists", func(t *testing.T) {
-		err := Generate("notexists.go")
+		err := generate("notexists.go")
 		require.EqualError(t, err, "can not read file: open notexists.go: no such file or directory")
 	})
 
@@ -22,7 +22,7 @@ func TestParseInputFile(t *testing.T) {
 		require.NoError(t, err)
 		f.Close()
 
-		err = Generate("badfile")
+		err = generate("badfile")
 		require.EqualError(t, err, "can not parse file: badfile:1:1: expected 'package', found bad")
 
 		err = os.Remove("badfile")
@@ -54,33 +54,33 @@ func TestOutputFileCreation(t *testing.T) {
 	require.NoError(t, err)
 
 	t.Run("without extension", func(t *testing.T) {
-		err := Generate("testdata/models")
+		err := generate("testdata/models")
 		require.NoError(t, err)
 		require.FileExists(t, "testdata/models"+outFileNameSuffix)
 	})
 
 	t.Run("with go extension", func(t *testing.T) {
-		err := Generate("testdata/models.go")
+		err := generate("testdata/models.go")
 		require.NoError(t, err)
 		require.FileExists(t, "testdata/models"+outFileNameSuffix+".go")
 	})
 
 	t.Run("with not go extension", func(t *testing.T) {
-		err := Generate("testdata/models.txt")
+		err := generate("testdata/models.txt")
 		require.NoError(t, err)
 		require.FileExists(t, "testdata/models"+outFileNameSuffix+".txt")
 	})
 
 	t.Run("folder with dot", func(t *testing.T) {
-		err := Generate("foo.bar/models")
+		err := generate("foo.bar/models")
 		require.NoError(t, err)
 		require.FileExists(t, "foo.bar/models"+outFileNameSuffix)
 
-		err = Generate("foo.bar/models.go")
+		err = generate("foo.bar/models.go")
 		require.NoError(t, err)
 		require.FileExists(t, "foo.bar/models"+outFileNameSuffix+".go")
 
-		err = Generate("foo.bar/models.txt")
+		err = generate("foo.bar/models.txt")
 		require.NoError(t, err)
 		require.FileExists(t, "foo.bar/models"+outFileNameSuffix+".txt")
 	})

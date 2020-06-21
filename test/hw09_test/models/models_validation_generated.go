@@ -4,6 +4,8 @@ package models
 import (
 	"errors"
 	"regexp"
+	"strconv"
+	"strings"
 )
 
 type ValidationError struct {
@@ -36,15 +38,40 @@ func (u User) Validate() ([]ValidationError, error) {
 		})
 	}
 
-	re, err := regexp.Compile("^\\w+@\\w+\\.\\w+$")
+	uEmailRE, err := regexp.Compile(`^\\w+@\\w+\\.\\w+$`)
 	if err != nil {
 		return vErrs, err
 	}
-	if !re.Match([]byte(u.Email)) {
+	if !uEmailRE.Match([]byte(u.Email)) {
 		vErrs = append(vErrs, ValidationError{
 			Field: "Email",
 			Error: errors.New(`Email is not matching regexp "^\\w+@\\w+\\.\\w+$"`),
 		})
+	}
+
+	inStrings := strings.Split("admin,stuff", ",")
+	var found bool
+	for _, s := range inStrings {
+		found = u.Role == strings.TrimSpace(s)
+		if found {
+			break
+		}
+	}
+	if !found {
+		vErrs = append(vErrs, ValidationError{
+			Field: "Role",
+			Error: errors.New("Role not in [admin,stuff]"),
+		})
+	}
+
+	for _, item := range u.Phones {
+		if len(item) != 11 {
+			vErrs = append(vErrs, ValidationError{
+				Field: "Phones",
+				Error: errors.New("length of each element in Phones must be 11 characters"),
+			})
+			break
+		}
 	}
 
 	return vErrs, nil
@@ -68,7 +95,42 @@ func (a App) Validate() ([]ValidationError, error) {
 func (r Response) Validate() ([]ValidationError, error) {
 	var vErrs []ValidationError
 
-	// Code in(200,404,500)
+	rCodeSet := strings.Split("200,404,500", ",")
+	var found bool
+	for _, s := range rCodeSet {
+		i, err := strconv.Atoi(strings.TrimSpace(s))
+		if err != nil {
+			return vErrs, err
+		}
+		found = r.Code == i
+		if found {
+			break
+		}
+	}
+	if !found {
+		vErrs = append(vErrs, ValidationError{
+			Field: "Code",
+			Error: errors.New("Code not in [200,404,500]"),
+		})
+	}
+
+	rDescSet := strings.Split("ok,not found,server error", ",")
+	for _, item := range r.Desc {
+		var found bool
+		for _, s := range rDescSet {
+			found = item == strings.TrimSpace(s)
+			if found {
+				break
+			}
+		}
+		if !found {
+			vErrs = append(vErrs, ValidationError{
+				Field: "Desc",
+				Error: errors.New("each item in Desc must be from [ok,not found,server error] set"),
+			})
+			break
+		}
+	}
 
 	return vErrs, nil
 }

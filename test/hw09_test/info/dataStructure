@@ -1,5 +1,6 @@
 data { // данные для base-темплейта
     PackageName
+    []Imports
     Functions {
         function { // данные для генерации функции (для func-темплейта)
             VarName

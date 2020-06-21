@@ -19,8 +19,7 @@ var (
 	ErrCannotReadFile        = errors.New("can not read file")
 	ErrCannotParseFile       = errors.New("can not parse file")
 	ErrCannotWriteFile       = errors.New("can not write file")
-	ErrCannotBuildCode       = errors.New("can not build code")
-	ErrCannotBuildFunc       = errors.New("can not build func")
+	ErrCannotBuildSource     = errors.New("can not build source code")
 	ErrCannotFormatOutSource = errors.New("can not format source")
 )
 
@@ -36,7 +35,7 @@ func generate(sourcePath string) error {
 		return fmt.Errorf("%s: %w", ErrCannotParseFile, err)
 	}
 
-	templateData := getData(f)
+	templateData := getData(f, sourceBytes)
 
 	tmpl, err := template.ParseFiles("../templates/func.tmpl", "../templates/base.tmpl")
 	if err != nil {
@@ -46,7 +45,7 @@ func generate(sourcePath string) error {
 	var bb bytes.Buffer
 	err = tmpl.ExecuteTemplate(&bb, "base", templateData)
 	if err != nil {
-		return err
+		return fmt.Errorf("%s: %w", ErrCannotBuildSource, err)
 	}
 
 	outBytes, err := format.Source(bb.Bytes())

@@ -28,6 +28,7 @@ type Token struct {
 }
 
 type Response struct {
-	Code int    `validate:"in:200,404,500"`
-	Body string `json:"omitempty"`
+	Code int      `validate:"in:200,404,500"`
+	Desc []string `validate:"in:ok,not found,server error"`
+	Body string   `json:"omitempty"`
 }
