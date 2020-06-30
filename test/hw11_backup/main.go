@@ -37,29 +37,47 @@ func main() {
 		if err := client.Close(); err != nil {
 			log.Fatal(err)
 		}
-		fmt.Println("...Connection closed")
 	}()
 
 	var wg sync.WaitGroup
 	wg.Add(2)
 
-	// write
-	go func() {
-		var err error
-		for err == nil {
-			err = client.Send()
-		}
-		defer wg.Done()
-	}()
+	// sig := make(chan os.Signal, 1)
+	// signal.Notify(sig, syscall.SIGINT)
 
-	// read
-	go func() {
-		var err error
-		for err == nil {
-			err = client.Receive()
-		}
-		defer wg.Done()
-	}()
+	done := make(chan struct{})
+	go read(client, &wg, done)
+	go write(client, &wg, done)
 
 	wg.Wait()
+}
+
+func read(client TelnetClient, wg *sync.WaitGroup, done chan<- struct{}) {
+	defer wg.Done()
+	var err error
+	for {
+		err = client.Receive()
+		if err != nil {
+			fmt.Println("...Connection closed by remote server")
+			close(done)
+			break
+		}
+	}
+}
+
+func write(client TelnetClient, wg *sync.WaitGroup, done <-chan struct{}) {
+	defer wg.Done()
+	var err error
+WRITE:
+	for {
+		select {
+		case <-done:
+			break WRITE
+		default:
+			err = client.Send()
+			if err != nil {
+				log.Fatal(err)
+			}
+		}
+	}
 }

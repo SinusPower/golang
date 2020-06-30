@@ -29,8 +29,8 @@ var (
 	ErrCanNotConnect         = errors.New("can not connect to server")
 	ErrCanNotWriteOut        = errors.New("can not write into out")
 	ErrCanNotCloseConnection = errors.New("can not close connection")
-	ErrCanNotReadIn          = errors.New("can not read from in")
 	ErrCanNotWriteSocket     = errors.New("can not write socket")
+	ErrCanNotReadIn          = errors.New("can not read from in")
 	ErrCanNotReadSocket      = errors.New("can not read socket")
 )
 
@@ -90,5 +90,3 @@ func (c *Client) Close() error {
 	}
 	return nil
 }
-
-// author's solution takes no more than 50 lines
